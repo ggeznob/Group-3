@@ -1,34 +1,46 @@
+# import module
 import pygame
-from normal import *
-import surface
-
-# get paths of fonts and images
-font_path = './font/'
-image_path = './img/'
-ALGER = font_path + 'ALGER.TTF'
-ebrima = font_path + 'ebrima.ttf'
-Home = image_path + 'home.png'
-fight = image_path + 'fighting.png'
-setting = image_path + 'setting.png'
-
-# create values
-screen_size = (1280, 720)
-screen_center = (screen_size[0] / 2, screen_size[1] / 2)
-
-homeimg = pygame.image.load(Home)
-homeimg = pygame.transform.scale(homeimg, screen_size)
-fightimg = pygame.image.load(fight)
-fightimg = pygame.transform.scale(fightimg, screen_size)
-
-window = pygame.display.set_mode(screen_size)
-window.blit(homeimg, (0, 0))
+import level
+import user
+from setting import *
 
 
-def main():
-    pygame.init()
-    running = True
-    surface.Home(running)
+class Game:
+    PAUSE = False
+
+    # initialize game
+    def __init__(self):
+        pygame.init()
+        self.window = pygame.display.set_mode((screen_width, screen_height))
+        self.clock = pygame.time.Clock()
+        self.game_home = user.Home(self.window)
+        self.game_level1 = level.Level1(self.window)
+        self.game_level2 = level.Level2(self.window)
+        self.game_level3 = level.Level3(self.window)
+
+    # draw surface and flip game
+    def playing(self, stage=None):
+        if not stage:
+            stage = self.game_home
+        stage.draw_surface()
+        stage.functions()
+        if stage.upgrade:
+            self.upgrade(stage.stage_num)
+
+    # jump to next surface
+    def upgrade(self, stage_num):
+        if stage_num == 0:
+            self.game_home.remove()
+            self.playing(self.game_level1)
+        if stage_num == 1:
+            self.game_level1.remove()
+            self.playing(self.game_level2)
+        if stage_num == 2:
+            self.game_home.remove()
+            self.playing(self.game_level1)
 
 
 if __name__ == '__main__':
-    main()
+    # start game
+    game = Game()
+    game.playing()
