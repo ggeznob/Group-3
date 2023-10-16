@@ -318,3 +318,21 @@ class ShieldBearer(pygame.sprite.Sprite):
     def move(self):
         self.rect_x += self.move_speed
         self.rect = self.image.get_rect(center=(self.rect_x, self.rect_y))
+
+    def take_damage(self, damage):
+        actual_damage = max(damage - self.defense, 0)
+        self.HP -= actual_damage
+        if self.HP <= 0:
+            self.kill()
+
+    def attack_enemy_with_range(self, enemy):
+        distance = ((enemy.rect_x - self.rect_x) ** 2 + (enemy.rect_y - self.rect_y) ** 2) ** 0.5
+        if distance <= self.attack_range and self.can_attack():
+            enemy.take_damage(self.attack)
+            self.last_attack_time = pygame.time.get_ticks()
+
+    def can_attack(self):
+        current_time = pygame.time.get_ticks()
+        if current_time - self.last_attack_time > (1000 / self.attack_speed):
+            return True
+        return False
