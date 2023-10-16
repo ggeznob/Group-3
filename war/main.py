@@ -6,8 +6,6 @@ from setting import *
 
 
 class Game:
-    PAUSE = False
-
     # initialize game
     def __init__(self):
         pygame.init()
@@ -23,7 +21,7 @@ class Game:
         if not stage:
             stage = self.game_home
         stage.draw_surface()
-        stage.functions()
+        stage.event_loop()
         if stage.upgrade:
             self.upgrade(stage.stage_num)
 
