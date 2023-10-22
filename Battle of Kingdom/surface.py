@@ -1,7 +1,7 @@
 import pygame
 import sys
 
-from utils import Text, ImageButton, TextButton
+from utils import ImageButton
 from setting import *
 
 mainimg = pygame.transform.scale(pygame.image.load(main_page), (screen_width, screen_height))

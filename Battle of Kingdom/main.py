@@ -10,7 +10,7 @@ class Game:
     def __init__(self):
         pygame.init()
         self.window = pygame.display.set_mode((screen_width, screen_height))
-        pygame.display.set_caption("Battle of Kingdom")
+        pygame.display.set_caption("Ancient War")
         self.clock = pygame.time.Clock()
         self.stage = MainPage(self.window)
 
